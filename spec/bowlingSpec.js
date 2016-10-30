@@ -58,14 +58,19 @@ describe('Bowling', function(){
     expect(function(){bowling.rollTwo();}).toThrow(new Error("Can't 2nd roll when 1st roll is striked"))
   });
 
-  // it('scores bonus for the strike in the next Frame', function(){
-  //   bowling.totalScore = 10;
-  //   bowling.strike = true;
-  //   spyOn(bowling, 'randomOne').and.returnValue(3);
-  //   bowling.rollOne();
-  //   spyOn(bowling, 'randomTwo').and.returnValue(4);
-  //   bowling.rollTwo();
-  //   expect(bowling.totalScore).toEqual(24);
+  it('scores bonus for the strike in the next Frame', function(){
+    bowling.strike = true;
+    bowling.totalScore = 10;
+    spyOn(bowling, 'randomOne').and.returnValue(8);
+    bowling.rollOne();
+    spyOn(bowling, 'randomTwo').and.returnValue(0);
+    bowling.rollTwo();
+    expect(bowling.frameScore).toEqual(16);
+    expect(bowling.totalScore).toEqual(26);
+  });
+
+  // it('scores bonus correctly for double strike', function(){
+  //
   // });
 
 

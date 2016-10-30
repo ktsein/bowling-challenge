@@ -3,12 +3,18 @@ function Bowling(){
   this.secondRollScore = 0;
   this.frameScore = 0;
   this.totalScore = 0;
+  this.bonusScore = 0;
   this.strike = false;
 }
 
 Bowling.prototype.rollOne = function(){
   this.firstRollScore = this.randomOne();
-  this.checkStrike();
+  if (this.strike === true) {
+    this.frameScore = this.firstRollScore * 2;
+  } else {
+    this.checkStrike(this.firstRollScore);
+    this.frameScore = this.firstRollScore;
+  }
 }
 
 Bowling.prototype.rollTwo = function(){
@@ -16,11 +22,12 @@ Bowling.prototype.rollTwo = function(){
     throw new Error("Can't 2nd roll when 1st roll is striked");
   } else {
     this.secondRollScore = this.randomTwo();
-    this.checkStrike();
-    this.frameScore = this.firstRollScore + this.secondRollScore;
-    if (this.strike === true){
-      this.totalScore = this.totalScore + this.frameScore + this.frameScore;
+    if (this.strike === true) {
+      this.frameScore = this.frameScore + this.secondRollScore * 2;
+      this.totalScore = this.totalScore + this.frameScore ;
     } else {
+      this.checkStrike(this.secondRollScore);
+      this.frameScore = this.frameScore + this.secondRollScore;
       this.totalScore = this.totalScore + this.frameScore;
     }
   }
@@ -34,12 +41,16 @@ Bowling.prototype.randomTwo = function(){
   return (Math.floor(Math.random() * (11 - this.firstRollScore)));
 }
 
-Bowling.prototype.checkStrike = function(){
-  if (this.firstRollScore === 10){
-    this.strike = true;
-  } else if (this.secondRollScore === 10){
+Bowling.prototype.checkStrike = function(score){
+  if (score === 10){
     this.strike = true;
   } else {
     this.strike = false;
   }
+}
+
+Bowling.prototype.reset = function(){
+  this.firstRollScore = 0;
+  this.secondRollScore = 0;
+  this.frameScore = 0;
 }
